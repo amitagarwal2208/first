@@ -1,0 +1,71 @@
+#include <iostream>
+using namespace std;
+class Node
+{
+public:
+	int data;
+	Node* next;
+};
+Node* createLL()
+{
+	int x;
+	Node* head=NULL;
+	Node* tail=NULL;
+	while (true)
+	{
+		cin>>x;
+		if (x==-1) break;
+		Node* NewNode=new Node;
+		NewNode->data=x;
+		NewNode->next=NULL;
+
+		if (head==NULL)
+		{
+			head=NewNode;
+			tail=NewNode;
+		}
+		else{
+			tail->next=NewNode;
+			tail=NewNode;
+		}
+	}
+	return head;
+}
+void display(Node* head)
+{
+	Node* curNode=head;
+	cout<<curNode->data<<"->";
+	if (curNode->next==NULL) return;
+	display(curNode->next);
+}
+Node* iterReverseLL(Node* head)
+{
+	Node* curNode=head;
+	while(curNode && curNode->next)
+	{
+		Node* ahead=curNode->next;
+
+		curNode->next=ahead->next;
+		ahead->next=head;
+		head=ahead;
+	}
+	return head;
+}
+Node* recReverseLL(Node* head)
+{
+	Node* curNode=head;
+	if (curNode->next==NULL) return curNode;
+	Node* UpdatedHead = recReverseLL(curNode->next);
+	curNode->next->next=curNode;
+	curNode->next=NULL;
+	return UpdatedHead;
+}
+int main()
+{
+	Node* LL=createLL();
+	display(LL);
+	cout<<endl;
+	Node* reverseLL=recReverseLL(LL);
+    display(reverseLL);
+    cout<<endl;
+}
